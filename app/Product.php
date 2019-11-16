@@ -1,7 +1,7 @@
 <?php
 
 namespace App;
-use app\Category;
+
 
 use Illuminate\Database\Eloquent\Model;
 

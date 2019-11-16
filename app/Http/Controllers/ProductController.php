@@ -19,12 +19,12 @@ class ProductController extends Controller
     public function create() {
         $categories = Category::orderBy('name', 'ASC')->get();
 
-        return view('products.create', compact($categories));
+        return view('products.create', compact('categories'));
     }
 
     public function store(Request $request) {
         $this->validate($request, [
-            'code' => 'required|string|unique',
+            'code' => 'required|string|unique:products',
             'name' => 'required|string|max:100',
             'description' => 'nullable|string|max:100',
             'stock' => 'required|integer',
