@@ -57,7 +57,7 @@ class ProductController extends Controller
             ]);
 
             // Jika berhasil direct ke produk.index
-            return redirect(route('produk.index'))
+            return redirect(route('produk.index'))->back
                 ->view(['success' => '<strong>' . $product->name . '</strong> ditambahkan']);
 
         } catch (\Throwable $th) {
@@ -85,6 +85,76 @@ class ProductController extends Controller
 
         // mengembalikan nama file yang di tambung di variable $images
         return $images;
+    }
+
+    public function destroy($id) {
+        // query select bedasarkan id
+        $products = Product::findOrFail($id);
+
+        // Mengecek, jika field photo tidak null / kosong
+        if (!empty($products->photo)) {
+            // file akan dihapus dari folder uploads/produk
+            File::delete(public_path('upload/product/' .$products->photo));
+        }
+
+        // hapus data dari tabel
+        $products->delete();
+
+        return redirect()->back()->with(['success' => '<strong>' . $products->name . '</strong> Telah Dihapus!']);
+    }
+
+    public function edit($id) {
+        // query select berdasarkan id
+        $product = Product::findOrFail($id);
+        $categories = Category::orderBy('name', 'ASC')->get();
+
+        return view('products.edit', compact('product','categories'));
+    }
+
+
+    public function update(Request $request, $id){
+        // Validasi
+        $this->validate($request, [
+            'code' => 'required|string|max:10|exists:products,code',
+            'name' => 'required|string|max:100',
+            'description' => 'nullable|string|max:100',
+            'stock' => 'required|integer',
+            'price' => 'required|integer',
+            'category_id' => 'required|exists:categories,id',
+            'photo' => 'nullable|image|mimes:jpg,png,jpeg'
+        ]);
+
+
+        try {
+             //query select berdasarkan id
+            $product = Product::findOrFail($id);
+            $photo = $product->photo;
+
+            //cek jika ada file yang dikirim dari form
+            if ($request->hasFile('photo')) {
+            //cek, jika photo tidak kosong maka file yang ada di folder uploads/product akan dihapus
+            !empty($photo) ? File::delete(public_path('uploads/product/' . $photo)):null;
+            //uploading file dengan menggunakan method saveFile() yg telah dibuat sebelumnya
+            $photo = $this->saveFile($request->name, $request->file('photo'));
+            }
+
+            //perbaharui data di database
+            $product->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'stock' => $request->stock,
+            'price' => $request->price,
+            'category_id' => $request->category_id,
+            'photo' => $photo
+            ]);
+
+            return redirect(route('produk.index'))
+            ->with(['success' => '<strong>' . $product->name . '</strong> Diperbaharui']);
+
+        } catch (\Throwable $e) {
+            return redirect()->back()
+            ->with(['error' => $e->getMessage()]);
+        }
     }
 
 }
