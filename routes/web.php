@@ -21,6 +21,10 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::get('/', function() {
+    return redirect(route('login'));
+});
+
 Auth::routes();
 Route::group(['middleware' => 'auth'], function () {
 
@@ -36,9 +40,9 @@ Route::group(['middleware' => 'auth'], function () {
         ]);
         Route::get('/users/roles/{id}', 'UserController@roles')->name('users.roles');
         Route::put('/users/roles/{id}', 'UserController@setRoles')->name('users.set_role');
-        Route::post('users/permission', 'UserController@addPermission')->name('users.add_permission');
-        Route::get('users/role-permission', 'UserController@rolePermission')->name('users.roles_permission');
-        Route::put('users/permission/{role}', 'UserController@setRolePermission')->name('users.setRolePermission');
+        Route::post('/users/permission', 'UserController@addPermission')->name('users.add_permission');
+        Route::get('/users/role-permission', 'UserController@rolePermission')->name('users.roles_permission');
+        Route::put('/users/permission/{role}', 'UserController@setRolePermission')->name('users.setRolePermission');
 
     });
 

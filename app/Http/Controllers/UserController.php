@@ -90,9 +90,9 @@ class UserController extends Controller
             $getRole = Role::findByName($role);
 
             // Query untuk mengambil permission yang telah dimiliki oleh role terkait
-            $hasPermission = DB::table('role_has_permission')
-                ->select('permission.name')
-                ->join('permission', 'role_has_permission.permission_id', '=', 'permission.id')
+            $hasPermission = DB::table('role_has_permissions')
+                ->select('permissions.name')
+                ->join('permissions', 'role_has_permissions.permission_id', '=', 'permissions.id')
                 -where('role_id', $getRole->id)->get()->pluck('name')->all();
 
             // Mengambil data permission
@@ -114,15 +114,18 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    public function userRolePermission(Request $request, $role) {
-        // select role berdasarkan namanya
+
+    public function setRolePermission(Request $request, $role)
+    {
+        //select role berdasarkan namanya
         $role = Role::findByName($role);
 
-        // Fungsi syncPermission akan menghapus semua permission yang dimiliki role tersebut
-        // kemudian di -assign kembali sehingga tidak terjadi duplicate
-        $role->syncPermission($request->permission);
+        //fungsi syncPermission akan menghapus semua permissio yg dimiliki role tersebut
+        //kemudian di-assign kembali sehingga tidak terjadi duplicate data
+        $role->syncPermissions($request->permission);
         return redirect()->back()->with(['success' => 'Permission to Role Saved!']);
     }
+
 
     public function roles(Request $request, $id) {
         $user = User::findOrFail($id);

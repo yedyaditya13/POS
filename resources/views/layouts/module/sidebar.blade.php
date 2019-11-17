@@ -86,7 +86,7 @@
                         </li>
                     </ul>
                 </li>
-            @endrole
+                @endrole
 
                 <li class="nav-item has-treeview">
                     <a class="nav-link" href="{{ route('logout') }}"
