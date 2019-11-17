@@ -124,4 +124,23 @@ class UserController extends Controller
         return redirect()->back()->with(['success' => 'Permission to Role Saved!']);
     }
 
+    public function roles(Request $request, $id) {
+        $user = User::findOrFail($id);
+        $roles = Role::all()->pluck('name');
+
+        return view('users.roles', compact('user', 'roles'));
+    }
+
+    public function setRole(Request $request, $id) {
+        $this->validate($request, [
+            'role' => 'required'
+        ]);
+
+        $user = User::findOrFail($id);
+
+        // Menggunakan snycRoles agar telebih dahulu menghapus semua role yang di miliki
+        // Kemudian di-set kembali agar tidak terjadi duplicate
+        $user->sncyRoles($request->role);
+        return redirect()->back()->with(['success' => 'Role Sudah Di Set']);
+    }
 }
