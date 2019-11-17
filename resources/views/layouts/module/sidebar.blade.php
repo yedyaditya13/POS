@@ -59,7 +59,7 @@
             <a class="nav-link" href="{{ route('logout') }}"
                 onclick="event.preventDefault();
                 document.getElementById('logout-form').submit();">
-                <i class="nav-icon fa fa-sign-out"></i>
+                <i class="nav-icon fa fa-sign-out" aria-hidden="true"></i>
                 <p>
                     {{ __('Logout') }}
                 </p>
