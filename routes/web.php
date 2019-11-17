@@ -18,6 +18,9 @@
 
 
 // Setiap akses page harus login sebagai user terlebih dahulu
+
+use Illuminate\Support\Facades\Route;
+
 Auth::routes();
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('/kategori', 'CategoryController')->except([
@@ -37,6 +40,10 @@ Route::group(['middleware' => 'auth'], function () {
         'show'
     ]);
     Route::get('users/{id}', 'UserController@roles')->name('users.roles');
+
+    Route::post('users/permission', 'UserController@addPermission')->name('users.add_permission');
+    Route::get('users/role-permission', 'UserController@rolePermission')->name('users.role_permission');
+
 });
 
 

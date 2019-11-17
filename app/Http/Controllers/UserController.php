@@ -100,7 +100,18 @@ class UserController extends Controller
 
             return view('users.role_permission', compact('roles', 'permissions', 'hasPermission'));
         }
+    }
 
+    public function addPermission(Request $request) {
+        $this->validate($request, [
+            'name' => 'required|string|unique:permissions'
+        ]);
+
+        $permission = Permission::firstOrCreate([
+            'name' => $request->name
+        ]);
+
+        return redirect()->back();
     }
 
 }
