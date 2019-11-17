@@ -32,6 +32,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/role', 'RoleController')->except([
         'create', 'show', 'edit', 'update'
     ]);
+
+    Route::resource('/users', 'UserController')->except([
+        'show'
+    ]);
+    Route::get('users/{id}', 'UserController@roles')->name('users.roles');
 });
 
 
