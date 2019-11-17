@@ -29,6 +29,8 @@
                         </p>
                     </a>
                 </li>
+
+                @if (auth()->user()->can('show products') || auth()->user()->can('delete products'))
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fa fa-server"></i>
@@ -52,7 +54,9 @@
                         </li>
                     </ul>
                 </li>
+                @endif
 
+                @role('admin')
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fa fa-users"></i>
@@ -69,20 +73,20 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('users.index') }}" class="nav-link">
-                                <i class="fa fa-circle-o nav-icon"></i>
-                                <p>Users</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
                             <a href="{{ route('users.roles_permission') }}" class="nav-link">
                                 <i class="fa fa-circle-o nav-icon"></i>
                                 <p>Role Permission</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('users.index') }}" class="nav-link">
+                                <i class="fa fa-circle-o nav-icon"></i>
+                                <p>Users</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
-
+            @endrole
 
                 <li class="nav-item has-treeview">
                     <a class="nav-link" href="{{ route('logout') }}"
