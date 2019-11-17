@@ -16,8 +16,17 @@
 // });
 
 
-Route::resource('/kategori', 'CategoryController')->except([
-    'create', 'show'
-]);
 
-Route::resource('/produk', 'ProductController');
+// Setiap akses page harus login sebagai user terlebih dahulu
+Auth::routes();
+Route::group(['middleware' => 'auth'], function () {
+    Route::resource('/kategori', 'CategoryController')->except([
+        'create', 'show'
+    ]);
+
+    Route::resource('/produk', 'ProductController');
+
+    Route::get('/home', 'HomeController@index')->name('home');
+});
+
+
