@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use DB;
 
 class UserController extends Controller
 {
@@ -72,5 +74,33 @@ class UserController extends Controller
         return redirect()->back()->with(['success' => 'User: <strong>' . $user->name . '</strong> Dihapus']);
     }
 
+    public function rolePermission(Request $request) {
+        $role = $request->get('role');
+
+        // Default, set dua buah variabel dengan nilai null
+        $permissions = null;
+        $hasPermission = null;
+
+        // Mengambil data role
+        $roles = Role::all()->pluck('name');
+
+        // Apabila parameter role terpenuhi
+        if (!empty($role)) {
+            // select role bedasarkan namenya, ini sejenis dengan method find()
+            $getRole = Role::findByName($role);
+
+            // Query untuk mengambil permission yang telah dimiliki oleh role terkait
+            $hasPermission = DB::table('role_has_permission')
+                ->select('permission.name')
+                ->join('permission', 'role_has_permission.permission_id', '=', 'permission.id')
+                -where('role_id', $getRole->id)->get()->pluck('name')->all();
+
+            // Mengambil data permission
+            $permissions = Permission::all()->pluck('name');
+
+            return view('users.role_permission', compact('roles', 'permissions', 'hasPermission'));
+        }
+
+    }
 
 }
