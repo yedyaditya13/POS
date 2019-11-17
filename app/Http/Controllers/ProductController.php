@@ -22,6 +22,7 @@ class ProductController extends Controller
         return view('products.create', compact('categories'));
     }
 
+
     public function store(Request $request) {
         $this->validate($request, [
             'code' => 'required|string|unique:products',
@@ -57,8 +58,8 @@ class ProductController extends Controller
             ]);
 
             // Jika berhasil direct ke produk.index
-            return redirect(route('produk.index'))->back
-                ->view(['success' => '<strong>' . $product->name . '</strong> ditambahkan']);
+            return redirect(route('produk.index'))
+                ->with(['success' => '<strong>' . $product->name . ' </strong> ditambahkan']);
 
         } catch (\Throwable $th) {
             return redirect()->back()->with(['error' => $th->getMessage()]);

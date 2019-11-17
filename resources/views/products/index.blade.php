@@ -65,7 +65,7 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <sup class="label label-success">({{ $row->code }})</sup>
+                                                <sup class="badge badge-success">({{ $row->code }})</sup>
                                                 <strong>{{ ucfirst($row->name) }}</strong>
                                             </td>
                                             <td>{{ $row->stock }}</td>

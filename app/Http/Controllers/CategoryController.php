@@ -26,7 +26,7 @@ class CategoryController extends Controller
                 [
                 'description' => $request->description
             ]);
-            return redirect()->back()->with(['success' => 'Kategori : ' . $categories->name . 'ditambahkan']);
+            return redirect()->back()->with(['success' => 'Kategori : ' . $categories->name . ' ditambahkan']);
 
         } catch (\Throwable $th) {
             return redirect()->back()->with(['error' => $th->getMessage()]);
