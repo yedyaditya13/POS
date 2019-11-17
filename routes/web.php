@@ -43,6 +43,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('users/permission', 'UserController@addPermission')->name('users.add_permission');
     Route::get('users/role-permission', 'UserController@rolePermission')->name('users.role_permission');
+    Route::put('users/permission/{role}', 'UserController@setRolePermission')->name('users.setRolePermission');
 
 });
 
