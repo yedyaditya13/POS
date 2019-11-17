@@ -10,7 +10,8 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+     // Using spatie package for role & permission
+     use Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -40,6 +41,5 @@ class User extends Authenticatable
     ];
 
 
-    // Using spatie package for role & permission
-    use Notifiable, HasRoles;
+
 }
